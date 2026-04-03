@@ -1,3 +1,9 @@
 spring:
   application:
     name: rpc-gateway
+  config:
+    import: optional:file:.env[.properties]
+
+ethereum:
+  rpc:
+    url: ${ETHEREUM_SEPOLIA_RPC_URL:}
