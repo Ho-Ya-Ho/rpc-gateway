@@ -2,6 +2,7 @@ package com.hoya.rpc_gateway.balance.service;
 
 import com.hoya.rpc_gateway.balance.client.EthereumRpcClient;
 import com.hoya.rpc_gateway.balance.dto.BalanceResponse;
+import com.hoya.rpc_gateway.balance.validation.WalletAddressValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -16,8 +17,11 @@ public class BalanceService {
     private static final BigDecimal WEI_PER_ETH = new BigDecimal("1000000000000000000");
 
     private final EthereumRpcClient ethereumRpcClient;
+    private final WalletAddressValidator walletAddressValidator;
 
     public BalanceResponse getBalance(String address) {
+        walletAddressValidator.validate(address);
+
         String balanceHex = ethereumRpcClient.getBalance(address);
         BigInteger balanceWei = new BigInteger(stripHexPrefix(balanceHex), 16);
         BigDecimal balanceEth = new BigDecimal(balanceWei)
@@ -26,7 +30,6 @@ public class BalanceService {
 
         return new BalanceResponse(
                 address,
-                balanceWei.toString(),
                 balanceEth.toPlainString()
         );
     }
