@@ -4,11 +4,13 @@ import com.hoya.rpc_gateway.balance.client.EthereumRpcClient;
 import com.hoya.rpc_gateway.balance.dto.BalanceResponse;
 import com.hoya.rpc_gateway.balance.validation.WalletAddressValidator;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.math.RoundingMode;
+import java.util.Locale;
 
 @Service
 @RequiredArgsConstructor
@@ -19,6 +21,7 @@ public class BalanceService {
     private final EthereumRpcClient ethereumRpcClient;
     private final WalletAddressValidator walletAddressValidator;
 
+    @Cacheable(cacheNames = "balance", key = "#address.toLowerCase(T(java.util.Locale).ROOT)")
     public BalanceResponse getBalance(String address) {
         walletAddressValidator.validate(address);
 

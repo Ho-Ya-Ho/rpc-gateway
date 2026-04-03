@@ -7,3 +7,7 @@ spring:
 ethereum:
   rpc:
     url: ${ETHEREUM_SEPOLIA_RPC_URL:}
+
+cache:
+  balance:
+    ttl-seconds: ${BALANCE_CACHE_TTL_SECONDS}
