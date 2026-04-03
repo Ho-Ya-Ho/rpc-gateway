@@ -6,8 +6,14 @@ spring:
 
 ethereum:
   rpc:
-    url: ${ETHEREUM_SEPOLIA_RPC_URL:}
+    url: ${ETHEREUM_SEPOLIA_RPC_URL}
 
 cache:
   balance:
-    ttl-seconds: ${BALANCE_CACHE_TTL_SECONDS}
+    ttl-seconds: ${BALANCE_CACHE_TTL_SECONDS:10}
+
+rate-limit:
+  capacity: ${RATE_LIMIT_CAPACITY:30} # 각 IP가 한 버킷에서 동시에 보유할 수 있는 최대 토큰 수
+  refill-tokens: ${RATE_LIMIT_REFILL_TOKENS:30} # refill-minutes 주기마다 다시 채워 넣을 토큰 수
+  refill-minutes: ${RATE_LIMIT_REFILL_MINUTES:1} # 토큰을 refill-tokens 만큼 재충전하는 시간 간격(분)
+
